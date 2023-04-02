@@ -1,6 +1,9 @@
 Read more about debounce() method of Lodash.js
 https://www.geeksforgeeks.org/lodash-_-debounce-method/
 
+Watch this video to understand debounce and throttling in Javascript : https://youtu.be/cjIswDCKgu0
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
