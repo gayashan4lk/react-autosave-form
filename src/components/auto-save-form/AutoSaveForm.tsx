@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { debounce } from 'lodash';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object().shape({
+	name: Yup.string().required('Name is required'),
+	phone: Yup.string()
+		.min(10, 'Phone number should be withing 10 to 12 digits')
+		.max(12, 'Phone number should be withing 10 to 12 digits')
+		.matches(/^[+]?[0-9]+$/, 'Phone number should be numeric')
+		.required('Phone is required'),
+	email: Yup.string().email('Email is invalid').required('Email is required'),
+});
 
 export default function autosaveform({}) {
 	const [notifyDataSaved, setNotifyDataSaved] = useState(false);
@@ -16,6 +27,7 @@ export default function autosaveform({}) {
 			console.log(values);
 			setNotifyDataSaved(true);
 		},
+		validationSchema: validationSchema,
 	});
 
 	const debouncedSave = debounce(formik.handleSubmit, 1000);
@@ -43,6 +55,9 @@ export default function autosaveform({}) {
 					onChange={formik.handleChange}
 					value={formik.values.name}
 				/>
+				{formik.errors.name && formik.touched.name ? (
+					<div className=' text-sm text-red-500'>{formik.errors.name}</div>
+				) : null}
 
 				<label className='label'>
 					<span className='label-text'>What is your email?</span>
@@ -55,6 +70,9 @@ export default function autosaveform({}) {
 					onChange={formik.handleChange}
 					value={formik.values.email}
 				/>
+				{formik.errors.email && formik.touched.email ? (
+					<div className=' text-sm text-red-500'>{formik.errors.email}</div>
+				) : null}
 
 				<label className='label'>
 					<span className='label-text'>What is your phone?</span>
@@ -67,6 +85,9 @@ export default function autosaveform({}) {
 					onChange={formik.handleChange}
 					value={formik.values.phone}
 				/>
+				{formik.errors.phone && formik.touched.phone ? (
+					<div className=' text-sm text-red-500'>{formik.errors.phone}</div>
+				) : null}
 			</form>
 			<p
 				className='text-sm text-green-700 bg-green-300'
