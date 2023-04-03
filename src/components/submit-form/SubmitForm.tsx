@@ -1,4 +1,16 @@
 import { Formik, Form, Field } from 'formik';
+import { divide } from 'lodash';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object().shape({
+	name: Yup.string().required('Name is required'),
+	phone: Yup.string()
+		.min(10, 'Phone number should be withing 10 to 12 digits')
+		.max(12, 'Phone number should be withing 10 to 12 digits')
+		.matches(/^[+]?[0-9]+$/, 'Phone number should be numeric')
+		.required('Phone is required'),
+	email: Yup.string().email('Email is invalid').required('Email is required'),
+});
 
 export default function SubmitForm({}) {
 	const handleSubmit = (values: any) => {
@@ -17,9 +29,10 @@ export default function SubmitForm({}) {
 					email: '',
 					phone: '',
 				}}
+				validationSchema={validationSchema}
 				onSubmit={handleSubmit}
 			>
-				{({ handleChange, values }) => (
+				{({ handleChange, values, errors, touched }) => (
 					<Form>
 						<label className='label'>
 							<span className='label-text'>What is your name?</span>
@@ -32,6 +45,9 @@ export default function SubmitForm({}) {
 							onChange={handleChange}
 							value={values.name}
 						/>
+						{errors.name && touched.name ? (
+							<div className=' text-sm text-red-500'>{errors.name}</div>
+						) : null}
 
 						<label className='label'>
 							<span className='label-text'>What is your email?</span>
@@ -44,6 +60,9 @@ export default function SubmitForm({}) {
 							onChange={handleChange}
 							value={values.email}
 						/>
+						{errors.email && touched.email ? (
+							<div className=' text-sm text-red-500'>{errors.email}</div>
+						) : null}
 
 						<label className='label'>
 							<span className='label-text'>What is your phone?</span>
@@ -56,6 +75,9 @@ export default function SubmitForm({}) {
 							onChange={handleChange}
 							value={values.phone}
 						/>
+						{errors.phone && touched.phone ? (
+							<div className=' text-sm text-red-500'>{errors.phone}</div>
+						) : null}
 
 						<button type='submit' className='btn btn-sm'>
 							Submit
