@@ -1,5 +1,4 @@
 import { Formik, Form, Field } from 'formik';
-import { divide } from 'lodash';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
